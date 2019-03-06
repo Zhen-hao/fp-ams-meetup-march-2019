@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Category Theory Meetup</title>
+  <meta name="description" content="">
+  <meta name="author" content="Zhenhao Li">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootswatch/2.3.1/amelia/bootstrap.min.css">
+<link rel="stylesheet" href="./frameworks/revealjs/css/reveal.min.css">
+  <link rel="stylesheet" href="./frameworks/revealjs/css/theme/sky.css" id="theme">
+  <link rel="stylesheet" href="./highlighters/highlight.js/css/vs2015.css" id="theme">
+  <!--[if lt IE 9]>
+  <script src="lib/js/html5shiv.js"></script>
+  <![endif]-->  <link rel="stylesheet" href = "assets/css/slidify-reveal.css">
+
+</head>
+<body>
+  
+  <div class="reveal">
+    <div class="slides">
+      <section class='' data-state='' id='slide-1'>
+  <h2>Yoneda Embedding</h2>
+  <h3>Category theory study group</h3>
+
+<h3>Amsterdam 2019</h3>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+</section>
+<section>
+   <section class='' data-state=''>
+    <h2>Yoneda Lemma</h2>
+    <div style='text-align: center;'>
+    <img width = '760px' src='yoneda-lemma.png' />
+</div>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+   <section class='' data-state=''>
+    <h2>Natural Isomorphism</h2>
+
+<div style='text-align: center;'>
+    <img width = '760px' src='natural-iso.png' />
+</div>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+   <section class='' data-state=''>
+    <h2>Proof In Haskell</h2>
+
+<pre><code class="haskell">isoLeft :: (Functor f) =&gt; (forall x. (a -&gt; x) -&gt; f x) -&gt; f a
+isoLeft nt = nt id
+
+isoRight :: (Functor f) =&gt; f a -&gt; (forall x. (a -&gt; x) -&gt; f x)
+isoRight fa g = fmap g fa
+</code></pre>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+</section>
+<section>
+   <section class='' data-state=''>
+    <h3>(Co)Yoneda Embedding</h3>
+    <div style='text-align: center;'>
+    <img width = '760px' src='yoneda-emmb.png' />
+</div>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+   <section class='' data-state=''>
+    <h3>In Haskell</h3>
+
+<pre><code class="haskell">
+arrowMap :: (b -&gt; a) -&gt; (forall x. (a -&gt; x) -&gt; (b -&gt; x))
+arrowMap f g = g . f
+
+</code></pre>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+</section>
+<section>
+   <section class='' data-state=''>
+    <h3>Challenge 1</h3>
+    <p>Express the co-Yoneda embedding in Haskell.</p>
+
+<h4>Solution</h4>
+
+<pre><code class="haskell">arrowMap :: (a -&gt; b) -&gt; (forall x. (x -&gt; a) -&gt; (x -&gt; b))
+arrowMap f g = f . g
+</code></pre>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+</section>
+<section>
+   <section class='' data-state=''>
+    <h3>Challenge 2</h3>
+    <p>Show that the bijection we established between fromY and btoa is an isomorphism (the two mappings are the inverse of each other).</p>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+</section>
+<section>
+   <section class='' data-state=''>
+    <h3>Challenge 3</h3>
+    <p>Work out the Yoneda embedding for a monoid. What functor corresponds to the monoid&#39;s single object? What natural transformations correspond to monoid morphisms?</p>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+</section>
+<section>
+   <section class='' data-state=''>
+    <h3>Challenge 4</h3>
+    <p>What is the application of the covariant Yoneda embedding to preorders? (Question suggested by Gershom Bazerman.)</p>
+
+<h4>Solution</h4>
+
+<p>\(a \leq b\) if and only if \(\forall x, b \leq x \Rightarrow a\leq x\)</p>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+</section>
+<section>
+   <section class='' data-state=''>
+    <h3>Challenge 5</h3>
+    <p>Yoneda embedding can be used to embed an arbitrary functor category [C, D] in the functor category [[C, D], Set]. Figure out how it works on morphisms (which in this case are natural transformations).</p>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+</section>
+<section class='' data-state='' id='slide-9'>
+  <h1>Thank you!</h1>
+  
+</section>
+    </div>
+  </div>
+</body>
+  <script src="./frameworks/revealjs/lib/js/head.min.js"></script>
+  <script src="./frameworks/revealjs/js/reveal.min.js"></script>
+  <script>
+  // Full list of configuration options available here:
+  // https://github.com/hakimel/reveal.js#configuration
+  Reveal.initialize({
+    controls: true,
+    progress: true,
+    history: true,
+    center: true,
+    theme: Reveal.getQueryHash().theme || 'sky', 
+    transition: Reveal.getQueryHash().transition || 'concave', 
+    dependencies: [
+    // Cross-browser shim that fully implements classList -
+    // https://github.com/eligrey/classList.js/
+      { src: './frameworks/revealjs/lib/js/classList.js', condition: function() { return !document.body.classList;}},
+      // Zoom in and out with Alt+click
+      { src: './frameworks/revealjs/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      // Speaker notes
+      { src: './frameworks/revealjs/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+      // Remote control your reveal.js presentation using a touch device
+      //{ src: './frameworks/revealjs/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+      ]
+  });
+  </script>  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script> -->
+<script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="./widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<!-- LOAD HIGHLIGHTER JS FILES -->
+<script src="./highlighters/highlight.js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<!-- DONE LOADING HIGHLIGHTER JS FILES --> 
+
+</html>
