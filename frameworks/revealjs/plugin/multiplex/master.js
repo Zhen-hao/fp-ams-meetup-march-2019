@@ -1,32 +1,34 @@
 (function() {
-	// don't emit events from inside the previews themselves
+
+	// Don't emit events from inside of notes windows
 	if ( window.location.search.match( /receiver/gi ) ) { return; }
+
 	var multiplex = Reveal.getConfig().multiplex;
 
-	var socket = io.connect(multiplex.url);
+	var socket = io.connect( multiplex.url );
 
-	Reveal.addEventListener( 'slidechanged', function( event ) {
-		var nextindexh;
-		var nextindexv;
-		var slideElement = event.currentSlide;
+	function post() {
 
-		if (slideElement.nextElementSibling && slideElement.parentNode.nodeName == 'SECTION') {
-			nextindexh = event.indexh;
-			nextindexv = event.indexv + 1;
-		} else {
-			nextindexh = event.indexh + 1;
-			nextindexv = 0;
-		}
-
-		var slideData = {
-			indexh : event.indexh,
-			indexv : event.indexv,
-			nextindexh : nextindexh,
-			nextindexv : nextindexv,
+		var messageData = {
+			state: Reveal.getState(),
 			secret: multiplex.secret,
-			socketId : multiplex.id
+			socketId: multiplex.id
 		};
 
-		if( typeof event.origin === 'undefined' && event.origin !== 'remote' ) socket.emit('slidechanged', slideData);
-	} );
+		socket.emit( 'multiplex-statechanged', messageData );
+
+	};
+
+	// post once the page is loaded, so the client follows also on "open URL".
+	window.addEventListener( 'load', post );
+
+	// Monitor events that trigger a change in state
+	Reveal.addEventListener( 'slidechanged', post );
+	Reveal.addEventListener( 'fragmentshown', post );
+	Reveal.addEventListener( 'fragmenthidden', post );
+	Reveal.addEventListener( 'overviewhidden', post );
+	Reveal.addEventListener( 'overviewshown', post );
+	Reveal.addEventListener( 'paused', post );
+	Reveal.addEventListener( 'resumed', post );
+
 }());
